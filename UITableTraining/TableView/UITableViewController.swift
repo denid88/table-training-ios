@@ -1,0 +1,97 @@
+import UIKit
+
+class UITableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    let tableView = UITableView()
+    var data = [
+        ("Apple", "Fruit"),
+        ("Banana", "Fruit"),
+        ("Cherry", "Fruit"),
+        ("Elderberry", "Fruit"),
+        ("Carrot", "Vegetable"),
+        ("Broccoli", "Vegetable"),
+        ("Tomato", "Vegetable"),
+        ("Cucumber", "Vegetable"),
+        ("Potato", "Vegetable")
+    ]
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .blue
+        setupTable()
+    }
+    
+    private func setupTable() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.frame = view.bounds
+        tableView.rowHeight = 60.0
+        
+        let editButton = UIBarButtonItem(
+            image: UIImage(systemName: "pencil"), // Іконка
+            style: .plain,
+            target: self,
+            action: #selector(toggleEditing)
+        )
+        
+        navigationItem.rightBarButtonItem = editButton
+        
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomCell")
+               
+        NSLayoutConstraint.activate([
+           tableView.topAnchor.constraint(equalTo: view.topAnchor),
+           tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+           tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+           tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    @objc func toggleEditing() {
+       tableView.setEditing(!tableView.isEditing, animated: true)
+       navigationItem.rightBarButtonItem?.image = tableView.isEditing
+           ? UIImage(systemName: "checkmark")
+           : UIImage(systemName: "pencil")
+   }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomTableViewCell else {
+            return UITableViewCell()
+        }
+        let dataCell = data[indexPath.row]
+        cell.configure(image: UIImage(systemName: "apple.meditate")!, title: "\(dataCell.0)", subtitle: "\(dataCell.1)")
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("You selected \(data[indexPath.row])")
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // Editing possibility
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            data.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    // Move possibility
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedItem = data.remove(at: sourceIndexPath.row)
+        data.insert(movedItem, at: destinationIndexPath.row)
+    }
+}
