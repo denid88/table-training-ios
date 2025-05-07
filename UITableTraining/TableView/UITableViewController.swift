@@ -1,7 +1,11 @@
 import UIKit
 
-class UITableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    let tableView = UITableView()
+class UITableViewController: UIViewController {
+    let tableView: UITableView = {
+        let uiTableView = UITableView()
+        uiTableView.rowHeight = 60.0
+        return uiTableView
+    }()
     var data = [
         ("Apple", "Fruit"),
         ("Banana", "Fruit"),
@@ -23,11 +27,9 @@ class UITableViewController: UIViewController, UITableViewDelegate, UITableViewD
     private func setupTable() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
+        tableView.frame = view.bounds
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.frame = view.bounds
-        tableView.rowHeight = 60.0
         
         let editButton = UIBarButtonItem(
             image: UIImage(systemName: "pencil"), // Іконка
@@ -54,7 +56,19 @@ class UITableViewController: UIViewController, UITableViewDelegate, UITableViewD
            ? UIImage(systemName: "checkmark")
            : UIImage(systemName: "pencil")
    }
-    
+}
+
+extension UITableViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("You selected \(data[indexPath.row])")
+        tableView.deselectRow(at: indexPath, animated: true)
+        let photoGalleryVC = PhotoGalleryViewController()
+        navigationController?.pushViewController(photoGalleryVC, animated: true)
+    }
+}
+
+
+extension UITableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
@@ -66,11 +80,6 @@ class UITableViewController: UIViewController, UITableViewDelegate, UITableViewD
         let dataCell = data[indexPath.row]
         cell.configure(image: UIImage(systemName: "apple.meditate")!, title: "\(dataCell.0)", subtitle: "\(dataCell.1)")
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected \(data[indexPath.row])")
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // Editing possibility
