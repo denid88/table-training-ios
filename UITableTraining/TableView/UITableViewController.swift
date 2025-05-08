@@ -6,16 +6,31 @@ class UITableViewController: UIViewController {
         uiTableView.rowHeight = 60.0
         return uiTableView
     }()
+    
     var data = [
+        // Fruits
         ("Apple", "Fruit"),
         ("Banana", "Fruit"),
         ("Cherry", "Fruit"),
         ("Elderberry", "Fruit"),
+        ("Grapes", "Fruit"),
+        ("Mango", "Fruit"),
+        ("Orange", "Fruit"),
+        ("Peach", "Fruit"),
+        ("Pear", "Fruit"),
+        ("Strawberry", "Fruit"),
+        
+        // Vegetables
         ("Carrot", "Vegetable"),
         ("Broccoli", "Vegetable"),
         ("Tomato", "Vegetable"),
         ("Cucumber", "Vegetable"),
-        ("Potato", "Vegetable")
+        ("Potato", "Vegetable"),
+        ("Lettuce", "Vegetable"),
+        ("Onion", "Vegetable"),
+        ("Spinach", "Vegetable"),
+        ("Peas", "Vegetable"),
+        ("Bell Pepper", "Vegetable")
     ]
 
     override func viewDidLoad() {

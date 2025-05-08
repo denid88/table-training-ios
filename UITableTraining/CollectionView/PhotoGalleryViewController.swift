@@ -2,7 +2,7 @@ import UIKit
 
 class PhotoGalleryViewController: UIViewController {
     private var collectionView: UICollectionView!
-    private let images: [UIImage] = (1...9).compactMap { UIImage(named: "image\($0)") }
+    private let images: [UIImage] = Array(repeating: (1...9).compactMap { UIImage(named: "image\($0)") }, count: 8).flatMap { $0 }
     
     override func viewDidLoad() {
         super.viewDidLoad()

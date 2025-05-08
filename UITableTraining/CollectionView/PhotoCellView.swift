@@ -30,4 +30,9 @@ class PhotoCellView: UICollectionViewCell {
     func configure(with image: UIImage) {
         imageView.image = image
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil 
+    }
 }

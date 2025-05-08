@@ -71,4 +71,11 @@ class CustomTableViewCell: UITableViewCell {
         titleLabel.text = title
         subtitleLabel.text = subtitle
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        titleLabel.text = nil
+        subtitleLabel.text = nil
+    }
 }
