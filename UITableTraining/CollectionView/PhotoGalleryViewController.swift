@@ -38,7 +38,32 @@ class PhotoGalleryViewController: UIViewController {
 // MARK: - UICollectionViewDelegate
 extension PhotoGalleryViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Tapped on image \(indexPath.item + 1)")
+        let index = indexPath.item + 1
+        print("Tapped on image \(index)")
+        showAlert(index)
+    }
+    
+    @objc func showAlert(_ index: Int) {
+        let alertController = UIAlertController(
+            title: "You are choosen images",
+            message: "Apply your wishes",
+            preferredStyle: .alert
+        )
+        
+        let optionOneAction = UIAlertAction(title: "I've chosen this pic \(index)", style: .default) { _ in
+            print("Selected \(index) pic")
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            print("Cancel selected")
+        }
+        
+        alertController.addAction(optionOneAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }
 
